@@ -14,7 +14,16 @@ class MyModel:
     def load_training_data(cls):
         # your code here
         # this particular model doesn't train
-        return []
+        import string
+        printable = set(string.printable)
+        directory = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        with open(os.path.join(directory,"data","train.txt"), 'r') as f:
+            text =''.join(filter(lambda x: x in printable, f.read()))
+        text = text.lower().splitlines()
+        train_dataset = []
+        for sentence in text:
+            train_dataset.append(list(sentence)+["<stop>"])
+        return train_dataset
 
     @classmethod
     def load_test_data(cls, fname):
